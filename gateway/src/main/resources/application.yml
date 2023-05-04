@@ -1,0 +1,24 @@
+server:
+  port: 3000
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+spring:
+  application:
+    name: GATEWAY
+  cloud:
+    gateway:
+      routes:
+        - id : USER-SERVICE
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user/**
+        - id: USER-SERVICE
+          uri: lb://CONTACT-SERVICE
+          predicates:
+            - Path=/contact/**
